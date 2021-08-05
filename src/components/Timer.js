@@ -21,7 +21,7 @@ class Timer extends React.Component {
     this.handleClickStop = this.handleClickStop.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleKeyPress = this.handleKeyPress.bind(this);
-    // this.handleStatus = this.handleStatus.bind(this);
+    this.handleStatus = this.handleStatus.bind(this);
   }
 
   setRef(countdown){ // função necessária para que funcione o pause, start, stop. ela habilita o acesso a api e através da api temos como acessar o pause, start etc. vide documentação
@@ -30,32 +30,38 @@ class Timer extends React.Component {
     }
   };
 
-  // handleStatus() {
-  //   const condition = (this.countdownApi.isPaused() || this.countdownApi.isStopped())
+  handleStatus() {
+    const condition = (this.countdownApi.isPaused() || this.countdownApi.isStopped())
 
-  //   if(this.countdownApi.isCompleted()) {
-  //     this.setState({
-  //       horas: 0,
-  //       minutos: 0,
-  //       segundos: 0,
-  //       start: false,
-  //       timeout:true,
-  //     })
-  //   } else if (condition) {
-  //       this.setState({
-  //         start: false,
-  //       })
-  //   } else {
-  //       this.setState({
-  //         start: true,
-  //       })
-  //   }
-  // }
+    if(this.countdownApi.isCompleted()) {
+      this.setState({
+        horas: 0,
+        minutos: 0,
+        segundos: 0,
+        start: false,
+        timeout:true,
+      })
+    } else if (condition) {
+        this.setState({
+          start: false,
+        })
+    } else {
+        this.setState({
+          start: true,
+        })
+    }
+  }
 
   handleKeyPress(event) {
     if(isNaN(event.key)) {
       event.preventDefault();
     }
+  }
+
+  changeStateStart = () => {
+    this.setState({
+      start: true,
+    })
   }
 
   handleChange({ target }) {
@@ -69,23 +75,14 @@ class Timer extends React.Component {
 
   handleClickPause() {
     this.countdownApi.pause();
-    // this.setState({
-    //   start: false,
-    // })
   }
 
   handleClickStart() {
     this.countdownApi.start();
-    this.setState({
-      start: true,
-    })
   }
 
   handleClickReload() {
     this.countdownApi.stop();
-    this.setState({
-      start: false,
-    })
   }
 
   handleClickStop() {
@@ -108,11 +105,12 @@ class Timer extends React.Component {
       <div>
         { this.state.start && <div className="timing"></div> }
         <Countdown
-          date={Date.now() + tempo}
+          key={ Date.now() + tempo }
+          date={ Date.now() + tempo }
           ref={this.setRef} // Necessário para ativar a api que pode pausar, startar, etc.
           autoStart={false}
           daysInHours={false}
-          // onComplete={ this.handleStatus }
+          onComplete={ this.handleStatus }
         >
           {this.state.timeout && <Timeout change={ this.handleStatus } />}
         </Countdown>
