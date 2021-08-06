@@ -8,7 +8,6 @@ class Timeout extends React.Component {
     return(
       <div onClick={onClick} className="time-out" >
         <p>Time is over</p>
-        {/* <img src={senjutsu} alt="" /> */}
       </div>
     )
   }

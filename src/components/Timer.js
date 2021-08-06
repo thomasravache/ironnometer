@@ -1,6 +1,9 @@
 import React from 'react';
 import Countdown from 'react-countdown';
 import Timeout from './Timeout';
+import toasty from '../audios/toasty.mp3';
+import rocknroll from '../audios/gunzerker_rocknroll.mp3';
+import choose from '../audios/choose.mp3';
 
 class Timer extends React.Component {
   constructor(props) {
@@ -13,6 +16,7 @@ class Timer extends React.Component {
       start: false,
       timeout: false,
       disabled: false,
+      audio: choose,
     };
 
     this.setRef = this.setRef.bind(this);
@@ -23,6 +27,11 @@ class Timer extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleKeyPress = this.handleKeyPress.bind(this);
     this.handleStatus = this.handleStatus.bind(this);
+    this.playAudio = this.playAudio.bind(this);
+  }
+
+  componentDidMount() {
+    this.playAudio();
   }
 
   setRef(countdown){ // função necessária para que funcione o pause, start, stop. ela habilita o acesso a api e através da api temos como acessar o pause, start etc. vide documentação
@@ -60,10 +69,9 @@ class Timer extends React.Component {
     }
   }
 
-  changeStateStart = () => {
-    this.setState({
-      start: true,
-    })
+  playAudio() {
+    const audioEl = document.getElementsByClassName("audio-element")[0]
+    audioEl.play()
   }
 
   handleChange({ target }) {
@@ -85,7 +93,11 @@ class Timer extends React.Component {
       this.setState({
         start: true,
         disabled: true,
-      }, () => this.countdownApi.start())
+        audio: rocknroll,
+      }, () => {
+        this.countdownApi.start();
+        this.playAudio();
+      })
     }
   }
 
@@ -135,9 +147,11 @@ class Timer extends React.Component {
                 setTimeout(() => {
                   this.setState({
                     timeout: false,
+                    audio: toasty,
                   })
-                }, 10030)
-                return <Timeout />
+                  this.playAudio();
+                }, 4500)
+                return <Timeout />;
               }
 
               return <span className='timer'>{`${props.formatted.days}:${props.formatted.hours}:${props.formatted.minutes}:${props.formatted.seconds}`}</span>;
@@ -151,10 +165,11 @@ class Timer extends React.Component {
         </div>
         <div>
           <button onClick={ this.handleClickPause }>Pausar</button>
-          <button onClick={ this.handleClickStart } disabled={this.state.disabled}>Startar</button>
+          <button onClick={ this.handleClickStart } >Startar</button>
           <button onClick={ this.handleClickReload } disabled={this.state.disabled}>Recomeçar</button>
           <input type="reset" onClick={ this.handleClickStop } value="Zerar" />
         </div>
+        <audio className="audio-element" src={this.state.audio}></audio>
         </form>
       </div>
     );

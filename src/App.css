@@ -19,6 +19,11 @@ body {
   border-radius: 10px;
 }
 
+.time-out p {
+  color: rgb(116, 27, 27);
+  font-size: 100px;
+}
+
 .timing {
   background-image: url('./images/joker.gif');
   background-repeat: no-repeat;
