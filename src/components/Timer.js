@@ -3,7 +3,6 @@ import Countdown from 'react-countdown';
 import Timeout from './Timeout';
 import toasty from '../audios/toasty.mp3';
 import rocknroll from '../audios/gunzerker_rocknroll.mp3';
-import choose from '../audios/choose.mp3';
 import gameover from '../audios/game_over.mp3';
 
 class Timer extends React.Component {
@@ -11,13 +10,13 @@ class Timer extends React.Component {
     super(props);
 
     this.state = {
-      horas: 0,
-      minutos: 0,
-      segundos: 0,
+      horas: '',
+      minutos: '',
+      segundos: '',
       start: false,
       timeout: false,
       disabled: false,
-      audio: choose,
+      audio: '',
       displayButtonStart: 'initial',
     };
 
@@ -32,10 +31,6 @@ class Timer extends React.Component {
     this.playAudio = this.playAudio.bind(this);
   }
 
-  componentDidMount() {
-    this.playAudio();
-  }
-
   setRef(countdown){ // função necessária para que funcione o pause, start, stop. ela habilita o acesso a api e através da api temos como acessar o pause, start etc. vide documentação
     if (countdown) {
       this.countdownApi = countdown.getApi();
@@ -43,22 +38,13 @@ class Timer extends React.Component {
   };
 
   handleStatus() {
-    const condition = (this.countdownApi.isPaused() || this.countdownApi.isStopped())
-
     if(this.countdownApi.isCompleted()) {
       this.setState({
         start: false,
         timeout:true,
         disabled: false,
+        audio: gameover,
       })
-    } else if (condition) {
-        this.setState({
-          start: false,
-        })
-    } else {
-        this.setState({
-          start: true,
-        })
     }
   }
 
@@ -88,7 +74,11 @@ class Timer extends React.Component {
 
   handleClickStart() {
     const { horas, minutos, segundos } = this.state;
-    if (horas != 0 || minutos != 0 || segundos != 0) {
+    const condition1 = (horas !== '0' || minutos !== '0' || segundos !== '0');
+    const condition2 = (horas !== '00' || minutos !== '00' || segundos !== '00');
+    const condition3 = (horas !== '' || minutos !== '' || segundos !== '');
+    
+    if (condition1 && condition2 && condition3) {
       this.setState({
         start: true,
         disabled: true,
@@ -111,9 +101,9 @@ class Timer extends React.Component {
 
   handleClickStop() {
     this.setState({
-      horas: 0,
-      minutos: 0,
-      segundos: 0,
+      horas: '',
+      minutos: '',
+      segundos: '',
       start: false,
       timeout: false,
       disabled: false,
@@ -143,20 +133,21 @@ class Timer extends React.Component {
                 // return <div className="timing"><span className='timer'>{`${props.formatted.days}:${props.formatted.hours}:${props.formatted.minutes}:${props.formatted.seconds}`}</span></div>
                 return (
                   <div className="video">
-                    <iframe className="timing" width="420" height="345" src="https://www.youtube.com/embed/FhBnW7bZHEE?autoplay=1" frameborder="0" allowfullscreen allow="autoplay" autoStart="true"></iframe>
+                    <iframe title="youtube-video" className="timing" width="420" height="345" src="https://www.youtube.com/embed/FhBnW7bZHEE?autoplay=1" frameBorder="0" allowFullScreen allow="autoplay" autostart="true"></iframe>
                     <div className='timer'>{`${props.formatted.days}:${props.formatted.hours}:${props.formatted.minutes}:${props.formatted.seconds}`}</div>
                   </div>
                 )
               }
 
               if (this.state.timeout) {
+                this.playAudio();
+
                 setTimeout(() => {
                   this.setState({
                     timeout: false,
-                    audio: gameover,
                     displayButtonStart: 'initial',
-                  }, () => this.playAudio())
-                }, 3030)
+                  })
+                }, 3040)
                 return <Timeout />;
               }
 
@@ -173,7 +164,7 @@ class Timer extends React.Component {
           <button style={{display: this.state.displayButtonStart }} onClick={ this.handleClickStart } disabled={this.state.disabled}>Start</button>
           <input type="reset" onClick={ this.handleClickStop } value="Clear" />
         </div>
-        <audio className="audio-element" src={this.state.audio}></audio>
+        <audio className="audio-element" autoPlay src={this.state.audio}></audio>
         </form>
       </div>
     );
