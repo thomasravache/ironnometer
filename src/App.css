@@ -27,3 +27,8 @@ body {
   height: 291px;
   border-radius: 10px;
 }
+
+.timer {
+  color: white;
+  font-size: 100px;
+}

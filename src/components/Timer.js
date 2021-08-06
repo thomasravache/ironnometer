@@ -12,6 +12,7 @@ class Timer extends React.Component {
       segundos: 0,
       start: false,
       timeout: false,
+      disabled: false,
     };
 
     this.setRef = this.setRef.bind(this);
@@ -35,11 +36,9 @@ class Timer extends React.Component {
 
     if(this.countdownApi.isCompleted()) {
       this.setState({
-        horas: 0,
-        minutos: 0,
-        segundos: 0,
         start: false,
         timeout:true,
+        disabled: false,
       })
     } else if (condition) {
         this.setState({
@@ -55,6 +54,9 @@ class Timer extends React.Component {
   handleKeyPress(event) {
     if(isNaN(event.key)) {
       event.preventDefault();
+    }
+    if (event.target.name === 'horas' && (event.target.value >= 24 || event.target.value >= '24')) {
+      event.target.value = '';
     }
   }
 
@@ -78,7 +80,13 @@ class Timer extends React.Component {
   }
 
   handleClickStart() {
-    this.countdownApi.start();
+    const { horas, minutos, segundos } = this.state;
+    if (horas != 0 || minutos != 0 || segundos != 0) {
+      this.setState({
+        start: true,
+        disabled: true,
+      }, () => this.countdownApi.start())
+    }
   }
 
   handleClickReload() {
@@ -92,6 +100,7 @@ class Timer extends React.Component {
       segundos: 0,
       start: false,
       timeout: false,
+      disabled: false,
     })
   }
 
@@ -103,7 +112,7 @@ class Timer extends React.Component {
 
     return (
       <div>
-        { this.state.start && <div className="timing"></div> }
+        {/* { this.state.start && <div className="timing"></div> } */}
         <Countdown
           key={ Date.now() + tempo }
           date={ Date.now() + tempo }
@@ -111,19 +120,33 @@ class Timer extends React.Component {
           autoStart={false}
           daysInHours={false}
           onComplete={ this.handleStatus }
-        >
-          {this.state.timeout && <Timeout change={ this.handleStatus } />}
-        </Countdown>
+          renderer={ (props) => {
+              if (this.state.start) {
+                return <div className="timing"><span className='timer'>{`${props.formatted.days}:${props.formatted.hours}:${props.formatted.minutes}:${props.formatted.seconds}`}</span></div>
+              }
+
+              if (this.state.timeout) {
+                setTimeout(() => {
+                  this.setState({
+                    timeout: false,
+                  })
+                }, 10030)
+                return <Timeout />
+              }
+
+              return <span className='timer'>{`${props.formatted.days}:${props.formatted.hours}:${props.formatted.minutes}:${props.formatted.seconds}`}</span>;
+          } }
+        />
         <form action="" onSubmit={(event) => event.preventDefault()}>
         <div>
-          <input type="text" name="horas" maxLength="2" placeholder="Horas" onChange={ this.handleChange } onKeyPress={this.handleKeyPress} />:
-          <input type="text" name="minutos" maxLength="2" placeholder="Minutos" onChange={ this.handleChange } onKeyPress={this.handleKeyPress} />:
-          <input type="text" name="segundos" maxLength="2" placeholder="Segundos" onChange={ this.handleChange } onKeyPress={this.handleKeyPress} />
+          <input type="text" name="horas" maxLength="2" placeholder="Horas" onChange={ this.handleChange } onKeyPress={this.handleKeyPress} disabled={this.state.disabled} />:
+          <input type="text" name="minutos" maxLength="2" placeholder="Minutos" onChange={ this.handleChange } onKeyPress={this.handleKeyPress} disabled={this.state.disabled} />:
+          <input type="text" name="segundos" maxLength="2" placeholder="Segundos" onChange={ this.handleChange } onKeyPress={this.handleKeyPress} disabled={this.state.disabled} />
         </div>
         <div>
           <button onClick={ this.handleClickPause }>Pausar</button>
-          <button onClick={ this.handleClickStart }>Startar</button>
-          <button onClick={ this.handleClickReload }>Recomeçar</button>
+          <button onClick={ this.handleClickStart } disabled={this.state.disabled}>Startar</button>
+          <button onClick={ this.handleClickReload } disabled={this.state.disabled}>Recomeçar</button>
           <input type="reset" onClick={ this.handleClickStop } value="Zerar" />
         </div>
         </form>
