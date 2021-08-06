@@ -122,7 +122,13 @@ class Timer extends React.Component {
           onComplete={ this.handleStatus }
           renderer={ (props) => {
               if (this.state.start) {
-                return <div className="timing"><span className='timer'>{`${props.formatted.days}:${props.formatted.hours}:${props.formatted.minutes}:${props.formatted.seconds}`}</span></div>
+                // return <div className="timing"><span className='timer'>{`${props.formatted.days}:${props.formatted.hours}:${props.formatted.minutes}:${props.formatted.seconds}`}</span></div>
+                return (
+                  <div>
+                    <iframe className="timing" width="420" height="345" src="https://www.youtube.com/embed/FhBnW7bZHEE?autoplay=1" frameborder="0" allowfullscreen allow="autoplay" autoStart="true"></iframe>
+                    <div className='timer'>{`${props.formatted.days}:${props.formatted.hours}:${props.formatted.minutes}:${props.formatted.seconds}`}</div>
+                  </div>
+                )
               }
 
               if (this.state.timeout) {
