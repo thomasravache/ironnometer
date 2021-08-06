@@ -20,7 +20,8 @@ body {
 }
 
 .time-out p {
-  color: rgb(116, 27, 27);
+  font-family: 'Fredericka the Great', cursive, sans-serif;
+  color: rgb(124, 4, 4);
   font-size: 100px;
 }
 
@@ -34,6 +35,97 @@ body {
 }
 
 .timer {
-  color: white;
+  font-family: 'Fredericka the Great', cursive, sans-serif;
+  color: rgb(236, 222, 25);
   font-size: 100px;
+}
+
+.render {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.render .video {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.render .inputs-text {
+  font-family: 'Fredericka the Great', cursive, sans-serif;
+  font-size: 35px;
+  color: black;
+}
+
+.render input[type="text"]{
+  font-family: 'Fredericka the Great', cursive, sans-serif;
+  font-size: 35px;
+  width: 73px;
+  text-align: center;
+  padding: 7px;
+  margin-left: 5px;
+  margin-right: 5px;
+  margin-bottom: 10px;
+  border: none;
+  box-shadow: 3px 4px rgba(95, 89, 89, 0.795);
+  border-radius: 5px;
+  color: black;
+}
+
+.render .form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.render .buttons {
+  margin-top: 5px;
+}
+
+.render .buttons button, .render .buttons input {
+  font-family: 'Fredericka the Great', cursive, sans-serif;
+  font-size: 27px;
+  width: 90px;
+  height: 40px;
+  margin-left: 5px;
+  margin-right: 5px;
+  border: none;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.render .buttons button {
+  color: rgb(51, 47, 47);
+  background-color: rgb(146, 36, 36);
+  transition: 0.3s;
+}
+
+.render .buttons input {
+  color: rgb(146, 36, 36);
+  background-color: rgb(51, 47, 47);
+  transition: 0.3s;
+}
+
+.render .buttons button:hover {
+  transform: scale(1.1);
+  cursor: pointer;
+}
+
+.render .buttons input:hover {
+  transform: scale(1.1);
+  cursor: pointer;
+}
+
+.render .buttons button:active {
+  background-color: rgb(51, 47, 47);
+  color: rgb(146, 36, 36);
+  transform: scale(0.8);
+}
+
+.render .buttons input:active {
+  background-color: rgb(146, 36, 36);
+  color: rgb(51, 47, 47);
+  transform: scale(0.8);
 }

@@ -4,6 +4,7 @@ import Timeout from './Timeout';
 import toasty from '../audios/toasty.mp3';
 import rocknroll from '../audios/gunzerker_rocknroll.mp3';
 import choose from '../audios/choose.mp3';
+import gameover from '../audios/game_over.mp3';
 
 class Timer extends React.Component {
   constructor(props) {
@@ -17,6 +18,7 @@ class Timer extends React.Component {
       timeout: false,
       disabled: false,
       audio: choose,
+      displayButtonStart: 'initial',
     };
 
     this.setRef = this.setRef.bind(this);
@@ -64,9 +66,6 @@ class Timer extends React.Component {
     if(isNaN(event.key)) {
       event.preventDefault();
     }
-    if (event.target.name === 'horas' && (event.target.value >= 24 || event.target.value >= '24')) {
-      event.target.value = '';
-    }
   }
 
   playAudio() {
@@ -94,10 +93,15 @@ class Timer extends React.Component {
         start: true,
         disabled: true,
         audio: rocknroll,
+        displayButtonStart: 'none',
       }, () => {
         this.countdownApi.start();
         this.playAudio();
       })
+    } else {
+      this.setState({
+        audio: toasty,
+      }, () => this.playAudio())
     }
   }
 
@@ -113,7 +117,9 @@ class Timer extends React.Component {
       start: false,
       timeout: false,
       disabled: false,
-    })
+      audio: toasty,
+      displayButtonStart: 'initial',
+    }, () => this.playAudio())
   }
 
   render() {
@@ -123,9 +129,9 @@ class Timer extends React.Component {
     const tempo = minutos + segundos + horas;
 
     return (
-      <div>
+      <div className="render">
         {/* { this.state.start && <div className="timing"></div> } */}
-        <Countdown
+        <Countdown className="countdown"
           key={ Date.now() + tempo }
           date={ Date.now() + tempo }
           ref={this.setRef} // Necessário para ativar a api que pode pausar, startar, etc.
@@ -136,7 +142,7 @@ class Timer extends React.Component {
               if (this.state.start) {
                 // return <div className="timing"><span className='timer'>{`${props.formatted.days}:${props.formatted.hours}:${props.formatted.minutes}:${props.formatted.seconds}`}</span></div>
                 return (
-                  <div>
+                  <div className="video">
                     <iframe className="timing" width="420" height="345" src="https://www.youtube.com/embed/FhBnW7bZHEE?autoplay=1" frameborder="0" allowfullscreen allow="autoplay" autoStart="true"></iframe>
                     <div className='timer'>{`${props.formatted.days}:${props.formatted.hours}:${props.formatted.minutes}:${props.formatted.seconds}`}</div>
                   </div>
@@ -147,27 +153,25 @@ class Timer extends React.Component {
                 setTimeout(() => {
                   this.setState({
                     timeout: false,
-                    audio: toasty,
-                  })
-                  this.playAudio();
-                }, 4500)
+                    audio: gameover,
+                    displayButtonStart: 'initial',
+                  }, () => this.playAudio())
+                }, 3020)
                 return <Timeout />;
               }
 
               return <span className='timer'>{`${props.formatted.days}:${props.formatted.hours}:${props.formatted.minutes}:${props.formatted.seconds}`}</span>;
           } }
         />
-        <form action="" onSubmit={(event) => event.preventDefault()}>
-        <div>
-          <input type="text" name="horas" maxLength="2" placeholder="Horas" onChange={ this.handleChange } onKeyPress={this.handleKeyPress} disabled={this.state.disabled} />:
-          <input type="text" name="minutos" maxLength="2" placeholder="Minutos" onChange={ this.handleChange } onKeyPress={this.handleKeyPress} disabled={this.state.disabled} />:
-          <input type="text" name="segundos" maxLength="2" placeholder="Segundos" onChange={ this.handleChange } onKeyPress={this.handleKeyPress} disabled={this.state.disabled} />
+        <form className="form" action="" onSubmit={(event) => event.preventDefault()}>
+        <div className="inputs-text">
+          <input type="text" name="horas" maxLength="2" placeholder="Hr." onChange={ this.handleChange } onKeyPress={this.handleKeyPress} disabled={this.state.disabled} />:
+          <input type="text" name="minutos" maxLength="2" placeholder="Min." onChange={ this.handleChange } onKeyPress={this.handleKeyPress} disabled={this.state.disabled} />:
+          <input type="text" name="segundos" maxLength="2" placeholder="Sec." onChange={ this.handleChange } onKeyPress={this.handleKeyPress} disabled={this.state.disabled} />
         </div>
-        <div>
-          <button onClick={ this.handleClickPause }>Pausar</button>
-          <button onClick={ this.handleClickStart } >Startar</button>
-          <button onClick={ this.handleClickReload } disabled={this.state.disabled}>Recomeçar</button>
-          <input type="reset" onClick={ this.handleClickStop } value="Zerar" />
+        <div className="buttons">
+          <button style={{display: this.state.displayButtonStart }} onClick={ this.handleClickStart } disabled={this.state.disabled}>Start</button>
+          <input type="reset" onClick={ this.handleClickStop } value="Clear" />
         </div>
         <audio className="audio-element" src={this.state.audio}></audio>
         </form>
