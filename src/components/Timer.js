@@ -156,7 +156,7 @@ class Timer extends React.Component {
                     audio: gameover,
                     displayButtonStart: 'initial',
                   }, () => this.playAudio())
-                }, 3020)
+                }, 3030)
                 return <Timeout />;
               }
 
