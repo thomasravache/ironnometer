@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/ironnometer/static/css/main.8da48a0d.chunk.css",
-    "main.js": "/ironnometer/static/js/main.7056c6a2.chunk.js",
-    "main.js.map": "/ironnometer/static/js/main.7056c6a2.chunk.js.map",
+    "main.js": "/ironnometer/static/js/main.39e8bf5d.chunk.js",
+    "main.js.map": "/ironnometer/static/js/main.39e8bf5d.chunk.js.map",
     "runtime-main.js": "/ironnometer/static/js/runtime-main.a503a16a.js",
     "runtime-main.js.map": "/ironnometer/static/js/runtime-main.a503a16a.js.map",
     "static/js/2.45ce87fa.chunk.js": "/ironnometer/static/js/2.45ce87fa.chunk.js",
@@ -21,6 +21,6 @@
     "static/js/runtime-main.a503a16a.js",
     "static/js/2.45ce87fa.chunk.js",
     "static/css/main.8da48a0d.chunk.css",
-    "static/js/main.7056c6a2.chunk.js"
+    "static/js/main.39e8bf5d.chunk.js"
   ]
 }
