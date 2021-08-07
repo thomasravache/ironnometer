@@ -120,7 +120,6 @@ class Timer extends React.Component {
 
     return (
       <div className="render">
-        {/* { this.state.start && <div className="timing"></div> } */}
         <Countdown className="countdown"
           key={ Date.now() + tempo }
           date={ Date.now() + tempo }
@@ -130,7 +129,6 @@ class Timer extends React.Component {
           onComplete={ this.handleStatus }
           renderer={ (props) => {
               if (this.state.start) {
-                // return <div className="timing"><span className='timer'>{`${props.formatted.days}:${props.formatted.hours}:${props.formatted.minutes}:${props.formatted.seconds}`}</span></div>
                 return (
                   <div className="video">
                     <iframe title="youtube-video" className="timing" width="420" height="345" src="https://www.youtube.com/embed/FhBnW7bZHEE?autoplay=1" frameBorder="0" allowFullScreen allow="autoplay" autostart="true"></iframe>
