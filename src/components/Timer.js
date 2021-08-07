@@ -10,9 +10,9 @@ class Timer extends React.Component {
     super(props);
 
     this.state = {
-      horas: '',
-      minutos: '',
-      segundos: '',
+      horas: 0,
+      minutos: 0,
+      segundos: 0,
       start: false,
       timeout: false,
       disabled: false,
@@ -21,10 +21,7 @@ class Timer extends React.Component {
     };
 
     this.setRef = this.setRef.bind(this);
-    this.handleClickPause = this.handleClickPause.bind(this);
     this.handleClickStart = this.handleClickStart.bind(this);
-    this.handleClickReload = this.handleClickReload.bind(this);
-    this.handleClickStop = this.handleClickStop.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleKeyPress = this.handleKeyPress.bind(this);
     this.handleStatus = this.handleStatus.bind(this);
@@ -68,17 +65,14 @@ class Timer extends React.Component {
     })
   }
 
-  handleClickPause() {
-    this.countdownApi.pause();
-  }
-
   handleClickStart() {
     const { horas, minutos, segundos } = this.state;
-    const condition1 = (horas !== '0' || minutos !== '0' || segundos !== '0');
-    const condition2 = (horas !== '00' || minutos !== '00' || segundos !== '00');
-    const condition3 = (horas !== '' || minutos !== '' || segundos !== '');
+    const myStates = [horas, minutos, segundos];
+
+    const isValidInputValue = myStates.some((state) => parseInt(state) !== 0) // verifica se cada estado tem o valor diferente de zero.
+    // const condition = (parseInt(horas) !== 0 || parseInt(minutos) !== 0 || parseInt(segundos) !== 0) // implementação anterior a de cima;
     
-    if (condition1 && condition2 && condition3) {
+    if (isValidInputValue) { // se o valor que o usuario digitar for somente 0 não inicia o cronometro, e vazio também não pois sem nada no input o default dos estados é 0.
       this.setState({
         start: true,
         disabled: true,
@@ -95,15 +89,11 @@ class Timer extends React.Component {
     }
   }
 
-  handleClickReload() {
-    this.countdownApi.stop();
-  }
-
   handleClickStop() {
     this.setState({
-      horas: '',
-      minutos: '',
-      segundos: '',
+      horas: 0,
+      minutos: 0,
+      segundos: 0,
       start: false,
       timeout: false,
       disabled: false,
