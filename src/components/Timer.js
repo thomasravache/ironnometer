@@ -70,6 +70,7 @@ class Timer extends React.Component {
     const myStates = [horas, minutos, segundos];
 
     const isValidInputValue = myStates.some((state) => parseInt(state) !== 0) // verifica se cada estado tem o valor diferente de zero.
+    
     // const condition = (parseInt(horas) !== 0 || parseInt(minutos) !== 0 || parseInt(segundos) !== 0) // implementação anterior a de cima;
     
     if (isValidInputValue) { // se o valor que o usuario digitar for somente 0 não inicia o cronometro, e vazio também não pois sem nada no input o default dos estados é 0.
