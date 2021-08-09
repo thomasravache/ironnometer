@@ -146,9 +146,9 @@ class Timer extends React.Component {
         />
         <form className="form" action="" onSubmit={(event) => event.preventDefault()}>
         <div className="inputs-text">
-          <input type="text" name="horas" maxLength="2" placeholder="Hr." onChange={ this.handleChange } onKeyPress={this.handleKeyPress} disabled={this.state.disabled} />:
-          <input type="text" name="minutos" maxLength="2" placeholder="Min." onChange={ this.handleChange } onKeyPress={this.handleKeyPress} disabled={this.state.disabled} />:
-          <input type="text" name="segundos" maxLength="2" placeholder="Sec." onChange={ this.handleChange } onKeyPress={this.handleKeyPress} disabled={this.state.disabled} />
+          <input type="text" inputMode="numeric" name="horas" maxLength="2" placeholder="Hr." onChange={ this.handleChange } onKeyPress={this.handleKeyPress} disabled={this.state.disabled} />:
+          <input type="text" inputMode="numeric" name="minutos" maxLength="2" placeholder="Min." onChange={ this.handleChange } onKeyPress={this.handleKeyPress} disabled={this.state.disabled} />:
+          <input type="text" inputMode="numeric" name="segundos" maxLength="2" placeholder="Sec." onChange={ this.handleChange } onKeyPress={this.handleKeyPress} disabled={this.state.disabled} />
         </div>
         <div className="buttons">
           <button style={{display: this.state.displayButtonStart }} onClick={ this.handleClickStart } disabled={this.state.disabled}>Start</button>
